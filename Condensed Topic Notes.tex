@@ -1,73 +1,88 @@
-\documentclass[english, course]{Notes}
+\documentclass[12pt, titlepage]{article}
+
+\usepackage[letterpaper,margin=2cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage[]{algorithm2e}
+\usepackage{Commons}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage{tikz}
+\usepackage{bm}
+
+\input{math-boxes}
 
 \title{ORF 526 Condensed Topic Notes}
-\subject{Probability}
-\author{Emily Walters}
-\email{ewalters@princeton.edu}
-\speaker{Miklos Racz}
-\date{12}{09}{2018}
-\dateend{31}{12}{2018}
-\place{Friend Center 008}
+\date{\today}
+
 
 \begin{document}
-	
+\maketitle
+\tableofcontents
+\newpage
+
 \section{Elementary Probability Theory}
 
 \subsection{Conditional Probability}
 
-\begin{definition}[Conditional Probability]
-\[\prob{A \mid B} = \frac{\prob{A \cap B}}{\prob{B}} \]
-\end{definition}
+\begin{dfn}[Conditional Probability]{}
+\[\prob{A \mid B} = \frac{\prob{A \cap B}}{\prob{B}}\]
+\end{dfn}
 
-\begin{theorem}[Baye's Theorem]
+\begin{theo}[Baye's Theorem]{}
 \[\prob{A \mid B} = \frac{\prob{B \mid A} \prob{A}}{\prob{B}}\]
-\end{theorem}
+\end{theo}
 \subsection{Statistical Independence}
 
-\begin{definition}[Statistical Independence]
+\begin{dfn}[Statistical Independence]{}
 Two events $A, B$ are statistically independent if
 \[\prob{A \cap B} = \prob{A} \prob{B}\]
-\end{definition}
+\end{dfn}
 
 
 \subsection{Random Variables}
 
-\begin{definition}[Elementary Definition of Random Variables]
+\begin{dfn}[Elementary Definition of Random Variables]{}
 Given a sample space $\Omega$, a random variable is a numeric function on $\Omega$.
-\end{definition}
+\end{dfn}
 
 The distribution of random variables can be defined by a probability distribution function. This can take multiple forms.
 
-\begin{definition}[Cumulative Density Function]
+\begin{dfn}[Cumulative Density Function]{}
 \[F_X(x) = \prob{X \leq x}\]
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Probability Mass Function]
+\begin{dfn}[Probability Mass Function]{}
 The distribution of discrete random variables can be defined by a function of the form
 
 \[f_X(x) = \prob{X = x} = \prob{\{\omega \in \Omega \mid X(\omega) = x\}}\]
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Probability Density Function]
+\begin{dfn}[Probability Density Function]{}
 The distribution of a continuous random variable can be defined by a function $f_X$ where
 \[\prob{a \leq X \leq b} = \int_a^b f_X(x)dx\]
 
 Notice that this also defines the cumulative density function as
 \[F_X(x) = \int_{-\infty}^x f_X(t)dt\]
-\end{definition}
+\end{dfn}
 
 \subsection{Expected Value}
 
-\begin{definition}[Expected Value]
+\begin{dfn}[Expected Value]{}
 The expected value of a discrete random variable $X$ is defined as
 \[\expect{X} = \sum_{-\infty}^\infty x \prob{X = x}\]
 
 For a continuous random variable, we define it as
 \[\expect{X} = \int_{-\infty}^\infty xf_X(x) dx\]
 where $f_X$ is the probability density function of $X$.\\
-\end{definition}
+\end{dfn}
 
-\begin{remark}[Properties of Expected Value]
+\begin{rmk}[Properties of Expected Value]{}
 
 \begin{itemize}
 	\item Linearity: For $a, b \in \R$, $\expect{aX + bY} = a \expect{X} + b\expect{Y}$.
@@ -77,154 +92,154 @@ where $f_X$ is the probability density function of $X$.\\
 	\item If $\expect{|X^b|} < \infty$ and $0 < a \leq b$, then $\expect{|X^a|} < \infty$.
 	\item If $X, Y$ are independent random variables then $\expect{XY} = \expect{X}\expect{Y}$.
 \end{itemize}
-\end{remark}
+\end{rmk}
 
 \subsection{Variance}
 
-\begin{definition}[Variance]
+\begin{dfn}[Variance]{}
 \[\sigma^2 = \Var(X) = \expect{(X - \expect{X})^2} = \expect{X^2} - \expect{X}^2\]
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Covariance]
+\begin{dfn}[Covariance]{}
 \[\Cov(X, Y) = \expect{(X - \expect{X})}\expect{(Y - \expect{Y})}\]
-\end{definition}
+\end{dfn}
 
-\begin{remark}[Properties of Variance]\ \\	
+\begin{rmk}[Properties of Variance]{}
 \begin{itemize}
 	\item $\Var(X) \geq 0$.
 	\item $\Var(aX) = a^2\Var(X)$.
 	\item $\Var(aX + bY) = a^2\Var(X) + b^2\Var(Y) + 2ab\Cov(X, y)$.
 	
 \end{itemize}
-\end{remark}
+\end{rmk}
 
 \subsection{Important Distributions}
 
 \subsubsection{Bernoulli Distribution}
 
-\begin{remark}
+\begin{rmk}
 The Bernoulli distribution is the distribution of the random variable that takes the value $1$ with probability $p$ and the value $0$ with probability $(1-p)$.
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Bernoulli Distribution Properties]\ \\
+\begin{info}[Bernoulli Distribution Properties]{}
 \begin{itemize}
 	\item Expected Value: $\expect{X} = p$.
 	\item Variance: $\Var(X) = p(1-p)$.
 \end{itemize}
-\end{fact}
+\end{info}
 
 \subsubsection{Binomial Distribution}
 
-\begin{remark}
+\begin{rmk}
 The binomial distribution is the probability distribution of the number of successes in a sequence of $n$ experiments, each with probability of success $p$. In other words, the sum of $n$ independent random variables each with a Bernoulli distribution and probability $p$. 
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Binomial Distribution Properties]\ \\
+\begin{info}[Binomial Distribution Properties]{}
 \begin{itemize}
 	\item PMF: $\prob{X = k} = f(k, n, p) = {n \choose k} p^k (1-p)^{n-k}$.
 	\item CDF: $\prob{X \leq k} = F(k, n, p) = \sum_{i = 0}^k {n \choose i}p^i(1-p)^{n-i}$.
 	\item Expected Value: $\expect{X} = np$.
 	\item Variance: $\Var(X) = np(1-p)$.
 \end{itemize}
-\end{fact}
+\end{info}
 
 \subsubsection{Geometric Distribution}
 
-\begin{remark}
+\begin{rmk}
 The geometric distribution describes the number of repeated Bernoulli trials (experiments with a probability of success $p$) needed to achieve one success. For example, how many times must a coin be flipped to get a heads. 
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Geometric Distribution Properties]\ \\
+\begin{info}[Geometric Distribution Properties]{}
 	\begin{itemize}
 		\item PMF: $\prob{X = k} = f(k, p) = (1-p)^{k-1}p$.
 		\item CDF: $\prob{X \leq k} = F(k, p) = 1 - (1 - p)^k$.
 		\item Expected Value: $\expect{X} = \frac{1}{p}$.
 		\item Variance: $\Var(X) = \frac{1-p}{p^2}$.
 	\end{itemize}
-\end{fact}
+\end{info}
 
 \subsubsection{Poisson Distribution}
 
-\begin{remark}
+\begin{rmk}
 	The Poisson distribution describes the probability that a given number of events will occur in a fixed length of time if the events occur at a constant rate and the chance of one occurring is independent of the time since the last event. For example, the number of meteors that strike the earth in one year. $\lambda$ denotes the average number of events in a unit time.
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Poisson Distribution Properties]\ \\
+\begin{info}[Poisson Distribution Properties]{}
 	\begin{itemize}
 		\item PMF: $\prob{X = k} = f(k, \lambda) = e^{-\lambda} \frac{\lambda^k}{k!}$.
 		\item CDF: $\prob{X \leq k} = F(k, \lambda) = e^{-\lambda} \sum_{i=0}^k \frac{\lambda^i}{i!}$.
 		\item Expected Value: $\expect{X} = \lambda$.
 		\item Variance: $\Var(X) = \lambda$.
 	\end{itemize}
-\end{fact}
+\end{info}
 
 \subsubsection{Exponential Distribution}
 
-\begin{remark}
+\begin{rmk}
 	The exponential distribution describes the time between events in a Poisson point process. That is, a process in which events occur continuously and independently at a constant average rate. $\lambda$ denotes the average number of events in a unit time.
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Poisson Distribution Properties]\ \\
+\begin{info}[Poisson Distribution Properties]{}
 	\begin{itemize}
 		\item PDF: $f(x, \lambda) = \lambda e^{-\lambda x}$.
 		\item CDF: $\prob{X \leq k} = F(x, \lambda) = \int_{-\infty}^x f(t, \lambda) dt = 1 - e^{-\lambda x}$.
 		\item Expected Value: $\expect{X} = \frac{1}{\lambda}$.
 		\item Variance: $\Var(X) = \frac{1}{\lambda^2}$.
 	\end{itemize}
-\end{fact}
+\end{info}
 
 \subsubsection{Normal Distribution}
 
-\begin{remark}
+\begin{rmk}
 	The normal distribution is a continuous probability distribution with a number of unique properties. It is particularly important due to its relation to the central limit theorem.
-\end{remark}
+\end{rmk}
 
-\begin{fact}[Normal Distribution Properties]\ \\
+\begin{info}[Normal Distribution Properties]{}
 	\begin{itemize}
 		\item PDF: $f(x, \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(x - \mu)^2}{2 \sigma^2}}$.
 		\item CDF: $\prob{X \leq k} = F(x, \lambda) = \int_{-\infty}^x f(t, \lambda) dt = \frac{1}{2} [1 + erf(\frac{x - \mu}{\sigma \sqrt{2}})]$, where $erf$, the error function, is non-elementary.
 		\item Expected Value: $\expect{X} = \mu$.
 		\item Variance: $\Var(X) = \sigma^2$.
 	\end{itemize}
-\end{fact}
+\end{info}
 
 \subsection{Important Inequality Theorems}
 
-\begin{theorem}[Markov's Inequality]
+\begin{theo}[Markov's Inequality]{}
 Suppose $X$ is a non-negative random variable and $a > 0$. Then
 \[\prob{X \geq a} \leq \frac{\expect{X}}{a}\]
-\end{theorem}
+\end{theo}
 
-\begin{theorem}[Chebyshev's Inequality]
+\begin{theo}[Chebyshev's Inequality]{}
 Let $X$ be a random variable with $\expect{X} = \mu$ finite and non-zero variance $\Var(x) = \sigma^2$. Then for an real $k > 0$,
 \[\prob{|X - \mu| \geq k\sigma} \leq \frac{1}{k^2}\]
-\end{theorem}
+\end{theo}
 
 \subsection{Important Limit Theorems}
 
-\begin{theorem}[Weak Law of Large Numbers]
+\begin{theo}[Weak Law of Large Numbers]{}
 Let $\{X_i\}$ be i.i.d. random variables with mean $\mu$, and let $S_n = \frac{X_1 + X_2 + \dots + X_n}{n}$. Then $S_n$ converges to $\mu$ in probability. That is, for any $\epsilon > 0$,
 \[\lim_{n \to \infty} \prob{|S_n - \mu| > \epsilon} = 0\]
 
 That is, for any $\epsilon$, we can guarantee that $S_n$ is within $\epsilon$ of $\mu$ with arbitrary probability given a sufficient $n$.
-\end{theorem}
+\end{theo}
 
-\begin{theorem}[Strong Law of Large Numbers]
+\begin{theo}[Strong Law of Large Numbers]{}
 Let $\{X_i\}$ be i.i.d. random variables with mean $\mu$, and let $S_n = \frac{X_1 + X_2 + \dots + X_n}{n}$. Then $S_n$ converges to $\mu$ almost surely. That is, 
 \[\prob{\lim_{n \to \infty} S_n = \mu} = 1\]
-\end{theorem}
+\end{theo}
 
-\begin{theorem}[Central Limit Theorem]
+\begin{theo}[Central Limit Theorem]{}
 Let $\{X_i\}$ be i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$, and let $S_n = \frac{X_1 + X_2 + \dots + X_n}{n}$. Then
 \[\sqrt{n}(S_n - \mu) \to \mathcal{N}(0, \sigma^2)\]
 as $n \to \infty$. That is, as $n \to \infty$, the cumulative distribution function of $\sqrt{n}(S_n - \mu)$ converges pointwise to the CDF of the normal distribution centered at $0$ with variance $\sigma^2$.
-\end{theorem}
+\end{theo}
 
 \section{Measure Theory}
 
 \subsection{(Sigma) Algebras}
 
-\begin{definition}
+\begin{dfn}
 	A collection $C$ of subsets of $E$ (the universe) is called an algebra if:
 	\begin{itemize}
 		\item $\emptyset \in C$.
@@ -238,7 +253,7 @@ as $n \to \infty$. That is, as $n \to \infty$, the cumulative distribution funct
 		\item $A_1, A_2, \dots \in C \implies \bigcup^\infty_{i = 1}A_i \in C$.
 	\end{itemize}
 	Noticed the strengthened version of property three.
-\end{definition}
+\end{dfn}
 
 Examples:
 \begin{itemize}
@@ -246,51 +261,51 @@ Examples:
 	\item $\mathcal{E} = 2^E$, the discrete $\sigma$-algebra.
 \end{itemize}
 
-\begin{theorem}[Intersections and Unions of $\sigma$-Algebras]
+\begin{theo}[Intersections and Unions of $\sigma$-Algebras]{}
 \begin{itemize}
 	\item Any (countable or uncountable) intersection of $\sigma$-algebras is a $\sigma$-algebra.
 	\item The union of two $\sigma$-algebras is not necessarily a $\sigma$-algebra.\\
 \end{itemize}
-\end{theorem}
+\end{theo}
 
-\begin{definition}[]Generated $\sigma$-algebra]
+\begin{dfn}[]Generated $\sigma$-algebra]{}
 	Let $\mathcal{C}$ be a collection of subsets of $E$. Take all $\sigma$-algebras that contain $\mathcal{C}$. Take their intersection. This $\sigma$-algebra is called the $\sigma$-algebra generated by $\mathcal{C}$, and is denoted by $\sigma(\mathcal{C})$.
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Borel Algebras and Borel Sets]
+\begin{dfn}[Borel Algebras and Borel Sets]{}
 	If $E$ is a topological space, and $\mathcal{C}$ is the collection of all open sets of $E$, then $\sigma (\mathcal{C})$ is called the Borel $\sigma$-algebra. Its elements are called Borel sets. The Borel $\sigma$-algebra is denoted by $\mathcal{B}_E$ or $\mathcal{B}(E)$.
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Measurable Spaces and Measurable Sets]
+\begin{dfn}[Measurable Spaces and Measurable Sets]{}
 	A pair $(E, \mathcal{E})$ is a measurable space if $\mathcal{E}$ is a $\sigma$-algebra on $E$. The sets in $\mathcal{E}$ are called measurable sets.
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Measurable Rectangles]
+\begin{dfn}[Measurable Rectangles]{}
 	Let $(E, \mathcal{E})$, $(F, \mathcal{F})$ are two measurable spaces. If $A \subset E$ and $B \subset F$ are measurable sets, then $A \times B$ is called a measurable rectangle.\\
-\end{definition}
+\end{dfn}
 
-\begin{definition}[Products of Measurable Spaces]
+\begin{dfn}[Products of Measurable Spaces]{}
 	The product $(E \times F, \mathcal{E} \otimes \mathcal{F})$ where $\mathcal{E} \otimes \mathcal{F} = \sigma(\{A \times B \mid A \in \mathcal{E}$, $B \in \mathcal{F}\})$, is a measurable space.\\
-\end{definition}
+\end{dfn}
 
 \subsection{Measures}
 
-\begin{definition}[Measure]
+\begin{dfn}[Measure]{}
 	$\mu: \mathcal{E} \to \mathbb{R^+}$ is a measure on $(E, \mathcal{E})$ if
 	\begin{enumerate}
 		\item $\mu(\emptyset) = 0$
 		\item If $A_1, A_2, \dots \in \mathcal{E}$ are pairwise disjoint, then $\mu(\bigcup^\infty_{i = 1} A_i) = \sum^\infty_{i = 1}\mu(A_i)$
 	\end{enumerate}
-\end{definition}
+\end{dfn}
 Property (2) is called countable additivity or $\sigma$-additivity.\\
 
-\begin{definition}[Probability Measure]
+\begin{dfn}[Probability Measure]{}
 	A probability measure is a measure $\mu$ such that $\mu(E) = 1$.
-\end{definition}
+\end{dfn}
 
-\begin{definition}
+\begin{dfn}
 	A probability space is a triple $(E, \mathcal{E}, \mu)$ such that $(E, \mathcal{E})$ is a measurable space, and $\mu$ is a probability measure.
-\end{definition}
+\end{dfn}
 
 Probability spaces are often denoted $(\Omega, \mathcal{F}, \mathbb{P})$.\\
 
