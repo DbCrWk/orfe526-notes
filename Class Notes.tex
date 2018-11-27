@@ -1104,4 +1104,350 @@ If a state, component, or chain has a period of $1$, we call it aperiodic.\\
 Suppose that $X_0, X_1, \dots$ is an ergodic Markov chain on a finite state space $S$ with transition probability matrix $P$.For all $x \in S$, if $X_0 = x$, $X_n \to \Pi$ as $n \to \infty$ where $\Pi$ is the unique stationary distribution.
 \end{theorem}
 
+\section{11/6/2018}
+
+\begin{theorem}[Convergence of Markov Chains]
+	Let $S$ be a finite state space. let $X_0, X_1, X_2, \dots$ be an $S$-valued ergodic (irreducible and aperiodic) Markov chain with $X_0 = x \in S$. Then $X_n \to \Pi$ as $n \to \infty$ whhere $\Pi$ is the unique stationary distribution of the Markov chain.
+\end{theorem}
+
+\begin{theorem}
+	$dim \{f \mid Pf = f\} = $ number of irreducible components.
+\end{theorem}
+
+\begin{proof}
+	Suppose that $P$ is irreducible. $f = c \cdot \mathbbm{1}$ is an eigenvalue. \\
+	
+	Proof by contradiction for $\leq$: Assume $\exists f \mid Pf = f$ such that $f$ is non-constant. Let $A = \{x \in S \mid f(x) = \max f(y); y \in S\} \subsetneq S$, $A \neq \emptyset$. $x_0 \in A$ and $y_0 \in A^C$ both exist. There exists a path from $x_0 \to y_0$ because $P$ is irreducible. There exists $x, y$ along this path such that $x  \in A$, $y \in A^C$, $P_{xy} > 0$. Now,
+	\[(Pf)(x) = \sum_{z \in S} P_{xz} f(z) \leq P_{xy}f(y) + (1 - P_{xy}) \max_{z \in S} f(z) < \max{z \in S} f(z) = f(x)\]
+	
+	$f$ is not an eigenvector with eigenvalue $1$, a contradiction.\\
+	
+	Proof for $\geq$: If $dim\{f \mid Pf = f\} >$ number of irreducible components, then $\exists f \mid Pf = f$ and $f$ is non-constant on some irreducible component (by the pigeonhole principle). Reach a contradiction by applying the maximum principle on this component 
+\end{proof}
+
+\subsection{Coupling}
+
+\begin{definition}[Coupling]
+	If $X$ and $Y$ are random variables then a coupling $(X', Y')$ is a pair of random variables over a single probability space such that $X'$ has the same distribution as $X$ and $Y'$ has the same distribution as $Y$.
+\end{definition}
+
+\begin{remark}
+	A trivial coupling always exists: take $X'$ and $Y'$ to be independent with appropriate marginals. This is typically not useful.\\
+	
+	Often we want a coupling such that some "nice" property is satisfied.
+\end{remark}
+
+Examples:
+\begin{enumerate}
+	\item $X' \leq Y'$ A.S. (Stochastic Domination)
+	\item Want a coupling that minimizes $\mathbb{P}(X' \neq Y')$.
+\end{enumerate}
+
+\begin{definition}[Stochastic Domination]
+We say that $X$ (first-order) stochastically dominates $Y$, denoted $X \succeq Y$, if $\forall x \in \R$, $\prob{X \geq x} \geq \prob{Y \geq x}$.
+\end{definition}
+
+\begin{theorem}
+	$X \succeq Y$ if and only if there exists a coupling $(X', Y')$ such that $X' \geq Y'$ a.s.
+\end{theorem}
+
+\begin{proof}
+	Proof left as an exercise.
+\end{proof}
+
+\begin{theorem}
+	$X \sim Bin(m, p)$, $Y \sim Bin(n, p)$, $m < n$. Then $X \preceq Y$. 
+\end{theorem}
+
+\begin{proof}
+	Consider the following coupling: Let $Z_i \sim Bernoulli(p)$, $\{Z_i\}$ iid. Let $X' = \sum{i=1}^m Z_i$, $Y' = \sum_{i = 1}^n Z_i$. We have that $X' \sim X$, $Y' \sim Y$ and $X' \leq Y'$ by construction. 
+\end{proof}
+
+The idea of stochastic domination is very important to economics. For example, if we wanted to compare two lotteries $X$ and $Y$, we would choose the one that dominates the other. 
+
+\begin{proof}[Convergence of Markov Chains]
+	$X_0 = x, X_1, X_2, \dots$. Let $Y_0, Y_1, \dots$ be a markov chain on $S$ with probability transition matrix $P$ (same as for $\{X_i\}$), and $Y_0 \sim \Pi$ with $\{X_n\}, \{Y_n\}$ independent.\\
+	
+	Therefore, $Y_n \sim \Pi$ $\forall n \geq 0$. Now I will couple $\{X_n\}, \{Y_n\}$. Let $T = \min \{n \geq 0 \mid X_n = Y_n\}$, 
+	
+	\[Z_n = 
+	\begin{cases}
+		X_n & n < T\\
+		Y_n & n \geq T
+	\end{cases}
+	\]
+	
+	We claim that $\{Z_n\}$ is a Markov Chain on $S$ with $Z_0 = x$ and probability transition matrix $P$. Therefore, $(\{Z_n\}, \{Y_n\})$ is a coupling.\\
+	
+	\begin{align*}
+	&\prob{X_n = a}\\
+	=& \prob{Z_n = a}\\
+	=& \prob{Z_n = a \mid T > n} \cdot (1- \prob{T \leq n}) + \prob{Z_n = a \mid T \leq n} \cdot \prob{T \leq n}\\
+	=& \Pi(a) \cdot (1 - \prob{T > n}) + \prob{Z_n = a \mid T > n} \cdot \prob{T > n}
+	\end{align*}
+	so
+	\begin{align*}
+	&\prob(X_n = a) - \Pi(a) = \prob{T > n}(\prob{Z_n = a \mid T > n} - \Pi(a))\\
+	&|\prob{X_n = a} - \Pi(a)| = \prob{T > n}|\prob{Z_n = a \mid T > n} - \Pi(a)| \leq \prob{T > n}
+	\end{align*}
+	
+	For all $a \in S$. Assume that $\delta = \min_{x', y'} P_{x'y'} > 0$. Then
+	
+	\begin{align*}
+	&\prob(T > l + 1 \mid T > l)\\
+	\leq& \max_{x', y', x' \neq y'} \prob{X_{l + y} \neq Y_{l + 1} \mid X_{l} = x', Y_{l} = y'}\\
+	=& 1 -\min_{x', y', x' \neq y'} \prob{X_{l + 1} = Y_{l + 1} \mid X_l = x', Y_l = y'}\\
+	\leq& 1 - \min_{x', y', x' \neq y'} \prob{X_{l + 1} = Y_{l + 1} = x' \mid X_l = x', Y_l = y'}\\
+	\leq& 1 - \min_{x', y', x' \neq y'} P_{x'x'} P_{y'x'}\\
+	\leq& 1 - \delta^2
+	\end{align*}
+	
+	Therefore, $\prob{T > l} \leq (1-\delta^2)^l$. This shows that eventually $X_n$ and $Y_n$ will meet, and after that point $Z_n$ is stationary.\\
+	
+	Ergodicity implies that $\exists M < \infty$ such that $(P^M)_{x', y'} > 0$ for all $x', y' \in S$. That is, there is a path between any two states.
+\end{proof}
+
+\section{11/8/2018}
+
+What is the probability that I could end up in a given irreducible component?\\
+
+We can compute via first step analysis $X_0, X_1, X_2, \dots$. $T:= \min\{n \geq 0 \mid X_n \text{ is an essential state (first time in an irreducible component)}\}$. $f_i(x) = \prob(X_T \text{ in component } C_i \mid X_0 = x)$. Obviously $f_i(x) = 1$ if $x$ is in $C_i$, and $0$ if $x$ is in an irreducible component other than $C_i$.\\
+
+To define $f_i(x)$ for other parts of the graph, we can compute $f_i(x)$ by looking at possible single steps starting at $x$, then define the function inductively.
+
+\begin{theorem}[Convergence of Markov Chains]
+Let $S$ be a finite state space. $X_0, X_1, \dots$ an $S$-valued irreducible Markov Chain with period $k$. Then $\frac{1}{k}\{\mathcal{L}(X_n) + \mathcal{L}(X_{n+1}) + \dots + \mathcal{L}(X_{n + k - 1})\} \to \pi$ as $n \to \infty$ where $\pi$ is the unique stationary distribution.
+\end{theorem}
+
+\begin{theorem}[Ergodic Theorem for Markov Chains]
+Let $S$ be a finite state space. Let $X_0, X_1, \dots$ be an $S$-valued irreducible Markov chain. Let $f: S \to \R$. Then
+\[\lim_{n \to \infty} \frac{1}{n}\sum_{k=1}^n f(X_k) = \sum_{x \in S} f(x) \pi(x)\]
+almost surely. 
+\end{theorem}
+
+\begin{remark}[Ergodic Principle]
+	Time-averages are like space-averages.
+\end{remark}
+
+Special Case:\\
+
+$f(x) = \mathbbm{1}_{x = x_0}$ where $x_0 \in S$. $N_n(x) := \sum_{k = 1}^n \mathbbm{1}_{X_k = x}$. Ergodic theorem: $\frac{N_n(x_0}{n} \to \pi(x_0)$ as $n \to \infty$.\\
+
+That is, fraction of time spent at $x_0$ converges to the stationary probability of $x_0$.\\
+
+Observation: It is enough to prove theorem for such functions, since every function is a linear combination of such functions.\\
+
+\begin{remark}
+	The Ergodic theorem is basically the law of large numbers for Markov chains.
+\end{remark}
+
+\begin{proof}
+	One approach (sketch):\\
+	$\Var(\frac{1}{n} \sum_{k=1}^n \mathbbm{1}_{X_k = x_0}) = \frac{1}{n^2} \sum_{i, j = 1}^n Cov(\mathbbm{1}_{X_i = x_0} \mathbbm{1}_{X_j = x_0}) \leq$ exercise... $\leq \frac{1}{n^2} C n = \frac{C}{n}$. This process converges in probability.
+\end{proof}
+
+\section{11/15/2018}
+
+\subsection{Martingales}
+
+\begin{definition}[Martingales]
+	A martingale is a stochastic process with the property that in expectation, it does not change. That is
+	
+	\[\expect{X_{n + 1} \mid \mathcal{F}_n} = X_n\]
+\end{definition}
+
+In this class we will
+
+\begin{enumerate}
+	\item Define conditional expectation.
+	\item Introduce martingales.
+	\item Study their properties.
+\end{enumerate}
+
+\subsection{Conditional Expectation in Simple Discrete Setting}
+
+Suppose $X, Y$ are discrete random variables on $(\Omega, \mathcal{F}, \mathbb{P})$.
+
+\begin{definition}{Conditional Expectation}
+	Let
+	\[f(y) := \expect{X \mid Y = y} = \frac{\expect{X \dot 1_{\{y = y\}}}}{\prob{Y = y}}\]
+	
+	then the conditional expectation is defined as
+	
+	\[\expect{X \mid Y} :=  f(Y)\]
+	
+	Importantly, this is a random variable.
+\end{definition}
+
+Conditional expectation has the following properties
+\begin{enumerate}
+	\item Linearity: $\expect{a_1X_1 + a_2X_2 \mid Y} = a_1 \expect{X_1 \mid Y} + a_2 \expect{X_2 \mid Y}$.
+	\item Tower rule (a.k.a. law of Total Expectation): $\expect{\expect{X \mid Y}} = \expect{X}$. Proof: $\expect{\expect{X \mid Y}} = \sum_y \expect{X \mid Y = y} \cdot \prob{Y = y} = \sum_y \sum_x x \cdot \prob{X = x \mid Y = y} \cdot \prob{Y = y} = \sum_x x \cdot \sum_y \prob{X = x \mid Y = y} \cdot \prob{Y = y} = \sum_x x \cdot \prob{X = x} = \expect{X}$.
+	\item Independence: If $X$ and $Y$ are independent, then $\expect{X \mid Y} = \expect{X}$.
+	\item Take out what is known: $\expect{X g(Y) \mid Y} = g(Y) \cdot \expect{X \mid Y}$.
+\end{enumerate}
+
+Now suppose that $g :=  \sigma(Y) = \{Y^{-1}(B) \mid B \in \mathcal{B}\}$. Let $Z:= \expect{X \mid Y}$ and $G_y = \{\omega \in \Omega \mid Y(\omega) = y\}$. Then $Z$ is constant on each $G_y$, $g$ is generated by the $G_y$, and $Z$ is $(\Omega, g)$-measurable. \\
+
+Now let $G \in g$, $G = \bigcup_{y \in I}G_y$. $\expect{Z \cdot 1_G} = \sum_{y \in I} \expect{Z \cdot 1_{G_y}} = \sum_{y \in I} \expect{X \mid Y = y} \cdot \prob{Y = y} = \sum_{y \in I} \sum_x x \cdot \prob{X = x \mid Y = y} \cdot \prob{Y = y} = \expect{X \cdot 1_G}$.
+
+\begin{definition}[Conditional Expectation (General Form)]
+	Suppose that $X$ is an integrable random variable on $(\Omega, \mathcal{F}, \mathbb{P})$. That is, $\expect{|X|} < \infty$. Let $g \subset \mathcal{F}$ be a $\sigma$-algebra. The conditional expectation $\expect{X \mid g}$ is a $g$-measurable random variable such that for all $G \in g$ we have that
+	
+	\[\expect{\expect{X \mid g} \cdot 1_G} = \expect{X \cdot 1_G}\]
+	
+	Conditional expectation has the following properties:
+	
+	\begin{enumerate}
+		\item Linearity: $\expect{a_1X_1 + a_2X_2 \mid g} = a_1 \expect{X_1 \mid g} + a_2 \expect{X_2 \mid g}$.
+		\item Tower rule (a.k.a. law of Total Expectation): If $g_1 \subset g_2$, then $\expect{\expect{X \mid g_2} \mid g_1} = \expect{X \mid g_1}$. If $g_1 = \{\emptyset, \Omega\}$, then $\expect{\expect{X \mid g_2}} = \expect{X}$.
+		\item Independence: If $g$ and $\sigma(X)$ are independent, then $\expect{X \mid g} = \expect{X}$.
+		\item Take out what is known: If $Y$ is $g$-measurable and $X$ and $XY$ are integrable, then $\expect{XY \mid g} = Y\cdot \expect{X \mid g}$. That is, if $Y$ is $g$-measurable, then it can be pulled out from the conditional expectation.
+	\end{enumerate}
+	
+\end{definition}
+
+\begin{theorem}[Existence and Uniqueness of Conditional Expectation]
+	Given an integrable random variable $X$ on $(\Omega, \mathcal{F}, \mathbb{P})$ and a $\sigma$-algebra $g \subset \mathcal{F}$, there exists an integrable random variable $Z$ on $(\Omega, g, \mathbb{P})$ such that for every $G \in g$ we have that $\expect{Z \cdot 1_G} = \expect{X \cdot 1_G}$.\\
+	
+	Moreover, if this property holds for any $G \in g$ and two random variables $Z$ and $\tilde{Z}$ on $(\Omega, g, \mathbb{P})$, then $\prob{Z = \tilde{Z}} = 1$. That is, any two random variables that hold the earlier defined property, then they are equal almost everywhere.
+\end{theorem}
+
+\begin{remark}
+	\begin{enumerate}
+		\item An important special case is when $g$ is generated by a random variable (or multiple random variables). If $g = \sigma(Y)$ then we often just write $\expect{X \mid Y}$ for $\expect{X \mid g} = \expect{X \mid \sigma(Y)}$.
+		\item If $X$ is $g$-measurable, then $\expect{X \mid g} = X$.
+		\item If $g = \{\emptyset, \Omega\}$, the trivial $\sigma$-algebra, then $\expect{X \mid g} = \expect{X}$.
+	\end{enumerate}
+\end{remark}
+
+\begin{remark}[Intuition Behind Conditional Expectation]
+	Suppose that $\expect{X^2} < \infty$ and $X \in L^2(\Omega, \mathcal{F}, \mathbb{P})$. Note that $L^2(\Omega, \mathcal{F}, \mathbb{P})$ is a Hilbert space with inner product $\langle X, Y \rangle = \expect{X Y}$. So, the norm is $||X||_{L_2} = \sqrt{\langle X, X \rangle} = \sqrt{\expect{X^2}}$.\\
+	
+	Now let $g \subset \mathcal{F}$ be a $\sigma$-algebra and define $K := L^2(\Omega, g, \mathbb{P})$, a subspace of $L^2(\Omega, \mathcal{F}, \mathbb{P})$. Then if $X \in L^2(\Omega, \mathcal{F}, \mathbb{P})$ but $X \not \in K$, we can show that the orthogonal projection to the subspace is $Z = \expect{X \mid g}$.\\
+	
+	Suppose that $Y \in K$. Then $\expect{(X - Z)(Y - Z)} = \expect{\expect{(X - Z)(Y - Z) \mid g}}$ by the tower rule. But $Y - Z$ is $g$-measurable so we get $\expect{(Y - Z) \expect{X - Z \mid g}}$ and $\expect{X - Z \mid g} = \expect{X \mid g} - Z = 0$ so $(X - Z)$ and $(Y - Z)$ are perpendicular, showing that conditional expectation is an orthogonal projection.
+\end{remark}
+
+As a refresher, recall the following:
+
+\begin{definition}[Absolute Continuity]
+Let $\mu, \nu$ be two measures on some measurable space $(E, \mathcal{E})$. We say that $\nu$ is absolutely continuous with respect to $\mu$, writing $\nu << \mu$, if $\mu(A) = 0$ implies $\nu(A) = 0$ $\forall A \in \mathcal{E}$.
+\end{definition}
+
+\section{11/27/2018}
+
+\subsection{Recap}
+
+Let $(\Omega, \mathcal{F}, \mathbb{P})$.
+
+\begin{definition}[Filtration]
+	$\{\mathcal{F}_{n \geq 0}\}$, an increasing sequence of $\sigma$-algebras.
+\end{definition}
+
+\begin{definition}[Martingale]
+	$\{X_n\}_{n \geq 0}$ is a martingale w.r.t $\{\mathcal{F}_n\}$ if
+	\begin{enumerate}
+		\item $\{X_n\}$ is adapted to $\{\mathcal{F}_n\}$.
+		\item $X_n$ is integrable $\forall n \geq 0$.
+		\item $\expect{X_{n + m} \mid \mathcal{F}_n} = X_n$.
+	\end{enumerate}
+\end{definition}
+
+Property $3$ of martingales is the main condition. It is enough to show this for $m = 1$. We called $\mathcal{F}_n = \sigma(X_0, \dots, X_n)$ the natural filtration.
+
+\subsection{Martingales}
+Example:
+$X_1, X_2, \dots$ I.I.D. with $\prob{X_1 = +1} = \prob{X_1 = -1} = \frac{1}{2}$.\\
+
+$S_n = \sum_{i = 1}^n X_n$ a simple symmetric random walk.\\
+
+$Y_n = S_n^2 - n$.\\
+
+$\mathcal{F}_n = \sigma(X_0, X_1, \dots, X_n) = \sigma(S_0, S_1, \dots, S_n)$, $g_n = \sigma(Y_0, Y_1, \dots, Y_n)$. Note that $g_n \subset \mathcal{F}_n$. This is due to the fact that $Y_n$ loses information due to the squaring.\\
+
+\begin{exercise}
+	Is it true that $\expect{Y_{n+1} \mid \mathcal{F}_n} = Y_n$?\\
+	
+	Yes. By the tower rule:\\
+    $\expect{Y_{n+1} \mid g_n} = \expect{\expect{Y_{n + 1} \mid \mathcal{F}_n} \mid g_n} = \expect{Y_n \mid g_n} = Y_n$. 
+\end{exercise}
+
+\subsection{Stopping Time}
+$(\Omega, \mathcal{F}, \mathbb{P})$, $\{F_n\}_{n \geq 0}$ a filtration.\\
+
+\begin{definition}[Stopping Time]
+Suppose that $T: \Omega \to \{0, 1, 2, \dots\} \cup \{\infty\}$ is $\mathcal{F}$-measurable. $T$ is a stopping time if $\{\omega \mid T(\omega) \leq n\} \in \mathcal{F}_n$. Note that this means that at any step of the stochastic process, $T$ can tell us if we have stopped.\\
+
+Equivalently: $T$ is a stopping time if $\{\omega \mid T(\omega) = n\} \in \mathcal{F}_n$. The proof of equivalency is left as an exercise.
+\end{definition}
+
+Examples:
+
+\begin{enumerate}
+	\item (First) Hitting Times: $\{X_n\}$ an $S$-valued stochastic process. $\{\mathcal{F}_n\}$ the natural filtration. $A \subseteq S$. $T_A := \inf \{m \geq 0 \mid X_m \in A\}$. That is, the first time the stochastic process "hits" $A$.
+	\item Special Case, Return Times: $R := \inf\{m \geq 1 \mid X_m = X_0\}$.
+\end{enumerate}
+
+Non-Examples:
+
+\begin{enumerate}
+	\item Last Hitting Times: $\sup\{m \geq 0 \mid X_m \in A\}$. This is a random time, but not a stopping time. To determine if we have stopped, we have to look at all future time steps.
+	\item Sell Before the Market Drops: $\inf \{m \geq 0 \mid X_{m+1} - X_m < 0\}$.
+	\item Constant Time before a Hitting Time: $\inf\{m \geq 0 \mid X_m \in A\} - 5$. 
+\end{enumerate}
+
+\begin{claim}
+	If $T_1$, $T_2$ are stopping times, then $\min\{T_1, T_2\}$ and $\max\{T_1, T_2\}$ are also stopping times. Denote these as $T_1 \wedge T_2$ and $T_1 \vee T_2$ respectively. 
+\end{claim}
+
+\subsection{Stopped Martingales}
+
+$\{X_n\}_{n \geq 0}$ is a martingale, submartingale, or supermartingale. $T$ a stopping time.
+
+\begin{definition}[Stopped Process]
+	The stopped process $\{X_n^T\}_{n \geq 0}$ is defined as $X_n^T := X_{T \wedge n}$. That is, once the stop time is hit, the process stops.
+\end{definition}
+
+\begin{theorem}
+	If $\{X_n\}_{n \geq 0}$ is a mg/submg/supermg and $T$ is a stopping time, then $\{X_n^T\}_{n \geq 0}$ is always a mg/submg/supermg with respect to the same filtration.
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+	\item Adaptations: $X_n^T = \sum_{k=0}^{n-1} \mathbbm{1}_{T = k}X_k + \mathbbm{1}_{T \geq n}X_n$. Both terms are $\mathcal{F}_n$ measurable.
+	\item Integrability: $|X_n^T| \leq \sum_{k=0}^n |X_k|$. $|X_k|$ is integrable $\forall k \geq 0$, and the sum of integrable random variables is also integrable, so $|X_n^T|$ is integrable.
+	\item Mg property: $\expect{X_n^T \mid \mathcal{F}_{n-1}} = \expect{\sum_{k=0}^{n-1} \mathbbm{1}_{T = k}X_k + \mathbbm{1}_{T \geq n}X_n \mid \mathcal{F}_{n-1}} = \sum{k=0}^{n-1}(\mathbbm{1}_{T = k}X_k) + \mathbbm{1}_{T \geq n}\expect{X_n \mid \mathcal{F}_{n-1}} = \sum_{k=0}^{n-1} (\mathbbm{1}_{T = k} X_k) + \mathbbm{1}_{T \geq n}X_{n-1} =\sum_{k=0}^{n-2} (\mathbbm{1}_{T = k} X_k) + \mathbbm{1}_{T \geq n-1}X_{n-1} = X_{n-1}^T$.
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}
+	If $\{X_n\}_{n \geq 0}$ is a mg. and $T$ is a stopping time then $\expect{X_{T\wedge n}} = \expect{X_{T \wedge 0}} = \expect{X_0}$.
+\end{corollary}
+
+Assume that $\prob{T < \infty} = 1$. Then $\lim_{n \to \infty}T \wedge n = T$ almost surely.\\
+
+Question: Is it true that $\expect{X_T} = \expect{X_0}$.\\
+
+Answer: No. $\{S_n\}_{n \geq 0}$ a symmetric simple random walk starting at $0$. $T = \inf\{m \geq 0 \mid S_m = 1\}$.
+
+\begin{theorem}[Doob's Optimal Stopping Theorem]
+$(\Omega, \mathcal{F}, \mathbb{P})$ a probability space, $\{\mathcal{F}_n\}_{n \geq 0}$ a filtration, $\{X_n\}_{n \geq 0}$ a martingale, and $T$ a stopping time with $\prob{T < 0} = 1$.\\
+
+If any of the following conditions hold, then $\expect{X_T} = \expect{X_0}$.\\
+
+\begin{enumerate}
+	\item (Bounded Stopping Time) $\exists N < \infty$ such that $T \leq N$ almost surely.
+	\item (Bounded Process) $\exists K < \infty$ such that $\forall n$, $\prob{|X_n| \leq K} = 1$. This can be relaxed to $\forall n$, $\prob{|X_{T \wedge n}| \leq K} = 1$.
+	\item (Bounded Increments) $\expect{T} < \infty$ and $\exists K < \infty$ such that $\forall n \geq 1$, $\prob{|X_n - X_{n-1}| \leq K} = 1$. This can be relaxed to $\expect{T} < \infty$ and $\exists K < \infty$ such that $\forall n \geq 1$, $\prob{|X_{T \wedge n} - X_{T \wedge n-1}| \leq K} = 1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+	\item $\expect{X_T} = \expect{X_{T \wedge N}} = \expect{X_{T \wedge 0}} = \expect{X_0}$ using the fact that a $T \leq N$ almost surely and a stopped martingale is a martingale.
+	\item Use the dominated converge theorem with the function $K$ as the dominating function. $|X_{T \wedge n}| \leq K$ almost surely, and $K$ is integrable, so $\expect{X_0} = \lim_{n \to \infty} \expect{X_{T \wedge n}} = \expect{\lim_{n \to \infty} X_{T \wedge n}} = \expect{X_T}$. 
+	\item $|X_{T \wedge n} - X_0| = |\sum_{i = 1}^n (X_{T \wedge i} - X_{T \wedge (i-1)})| \leq \sum_{i = 1}^n |X_{T \wedge i} - X_{T \wedge (i-1)}| \leq (T \wedge n) K \leq TK$. So we can use the dominated convergence theorem with $T \cdot K$ as the dominating function.
+\end{enumerate}
+\end{proof}
 \end{document}
